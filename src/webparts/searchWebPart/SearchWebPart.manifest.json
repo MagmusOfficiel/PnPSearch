@@ -1,0 +1,21 @@
+{
+    "$schema": "https://developer.microsoft.com/json-schemas/spfx/client-side-web-part-manifest.schema.json",
+    "id": "544c1372-7e5a-49ec-8db6-812f76c375d8",
+    "alias": "SearchWebPart",
+    "componentType": "WebPart",
+  
+    "version": "1.0.0",
+    "manifestVersion": 2,
+  
+    "preconfiguredEntries": [{
+      "groupId": "5c03119e-3074-46fd-976b-c60198311f70",
+      "group": { "default": "Other" },
+      "title": { "default": "Search Web Part" },
+      "description": { "default": "Description of your search web part" },
+      "officeFabricIconFontName": "Page",
+      "properties": {
+        "documentationLink": "https://microsoft-search.github.io/pnp-modern-search/"
+      }
+    }]
+  }
+  
