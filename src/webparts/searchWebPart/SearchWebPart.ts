@@ -153,13 +153,44 @@ export default class SearchWebPart
                 if (config.boxDataSourceReference) {
                     config.boxDataSourceReference = `WebPart.${config.boxDataSourceReference.split('.')[1]}.${configs.SearchBoxInstanceId}:pnpSearchBoxWebPart`;
                 }
+                // Fonction pour obtenir l'instanceId en fonction de la propriété
+                const getInstanceIdByProperty = (property: string): string => {
+                    switch (property) {
+                        case 'pnpSearchBoxWebPart':
+                            return configs.SearchBoxInstanceId;
+                        case 'pnpSearchFiltersWebPart':
+                            return configs.SearchFilterInstanceId;
+                        case 'pnpSearchVerticalsWebPart':
+                            return configs.SearchVerticalInstanceId;
+                        case 'pnpSearchResultsWebPart':
+                            return configs.SearchResultInstanceId;
+                        default:
+                            return '';
+                    }
+                };
+                // Mise à jour des références
+                if (config.queryText && config.queryText.reference) {
+                    const instanceIdProperty = getInstanceIdByProperty(config.queryText.reference._property);
+                    config.queryText.reference._reference = `WebPart.${config.queryText.reference._reference.split('.')[1]}.${instanceIdProperty}:${config.queryText.reference._property}`;
+                    config.queryText.reference._sourceId = `WebPart.${config.queryText.reference._sourceId.split('.')[1]}.${instanceIdProperty}`;
+                    delete config.queryText.__type;
+                }
+
+                // Mise à jour des références
+                if (config.selectedItemFieldValue && config.selectedItemFieldValue.reference) {
+                    const instanceIdProperty = getInstanceIdByProperty(config.selectedItemFieldValue.reference._property);
+                    config.selectedItemFieldValue.reference._reference = `WebPart.${config.selectedItemFieldValue.reference._reference.split('.')[1]}.${instanceIdProperty}:${config.selectedItemFieldValue.reference._property}`;
+                    config.selectedItemFieldValue.reference._sourceId = `WebPart.${config.selectedItemFieldValue.reference._sourceId.split('.')[1]}.${instanceIdProperty}`;
+                }
+
                 webPart.setProperties(config);
+
                 const existingSection = page.sections.find(section => section.columns.find(col => col.controls.find(control => control.id === webPart.data.webPartData.instanceId)));
                 if (!existingSection) {
                     page.addSection().addColumn(column).addControl(webPart);
                 }
             }
-            
+
             await page.save();
             window.location.reload()
         } catch (error) {
